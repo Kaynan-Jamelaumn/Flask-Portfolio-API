@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} signup {% endblock%}
+{% block content %}
+    <form method="POST">
+        <h3 class="text-center">Sign Up</h3>
+        <div class="form-group">
+            <label for="email">Endereço de e-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Insira um E-mail">
+        </div>
+
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Insira um Nome">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Insira uma Senha">
+        </div>
+
+        <div class="form-group">
+            <label for="password-confirmation">Confirmar Senha</label>
+            <input type="password-confirmation" class="form-control" id="password-confirmation" name="senha2" placeholder="Insira a senha novamente">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary py-2">Enviar</button>
+    </form>
+
+
+    {% if dictin %}
+    <div class="mt-5">
+        <p>{{dictin.nome}}</p>
+        <p>{{dictin.email}}</p>
+    </div>
+        {% endif %}
+
+{% endblock %}
