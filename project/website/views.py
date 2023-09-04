@@ -113,6 +113,7 @@ def project_action(projectId):
                 except UploadNotAllowed:
                     flash('File type is not allowed',
                           category='error')
+                    return redirect(url_for('views.project_action', projectId=projectId))
             db.session.commit()
             flash('Project updated', category='success')
 
