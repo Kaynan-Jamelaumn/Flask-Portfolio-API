@@ -1,9 +1,8 @@
-from os import path
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from werkzeug.utils import secure_filename
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 db = SQLAlchemy()
@@ -15,12 +14,9 @@ def create_app():
     app.config['SECRET_KEY'] = '___jamelaumn___DJKpdjoggfpyht#$#dh___ENRICKY___jklfDHFCJFOHY78JTRNDY7FYLIOP0I47a___kaynan___'
     # caminho do banco
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-
-    app.config['UPLOADED_IMAGES_DEST'] = 'caminho/para/salvar/as/imagens'
     images = UploadSet('images', IMAGES)
+    app.config['UPLOADED_IMAGES_DEST'] = f'{os.getcwd()}/images'
     configure_uploads(app, images)
-    app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
-
     db.init_app(app)
 
     migrate = Migrate(app, db)

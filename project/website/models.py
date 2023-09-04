@@ -33,6 +33,8 @@ class Project(db.Model):
     text = db.Column(db.String(10000),  nullable=True)
     image = db.Column(db.String(150),  nullable=True)
     public = db.Column(db.Boolean, default=False)
+    source_code = db.Column(db.String(500),  nullable=True)
+    live_code = db.Column(db.String(500),  nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), default=func.now())
     # user_id is the name of the table and the field

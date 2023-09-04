@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, url_for, redirect, render_template, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
-from website import db, images
+from website import db,  images
+from flask_uploads import UploadNotAllowed
 from flask_login import login_user, logout_user, current_user, login_required
 
 auth = Blueprint('auth', __name__)
@@ -30,7 +31,7 @@ def api_sign_up():
         email = data.get('email')
         password = data.get('password')
         password_confirmation = data.get('password_confirmation')
-        image = request.files['image']
+        image = request.files.get('image')
         errors = []
         user = User.query.filter_by(email=email).first()
         if user:
@@ -47,9 +48,15 @@ def api_sign_up():
         if len(errors) == 0:
             hashed_password = generate_password_hash(password, method='sha256')
             user = User(email=email, name=name, password=hashed_password)
-            if image:
-                filename = images.save(image)
-                user.image = filename
+            if image:  # Check if an image was uploaded
+                try:
+                    filename = images.save(image)
+                    user.image = filename
+                except UploadNotAllowed:
+                    response_data = {
+                        "error": "File type is not allowed"
+                    }
+                    return jsonify(response_data), 400
 
             try:
                 db.session.add(user)
@@ -132,9 +139,14 @@ def signUp():
         else:
             user = User(email=email, name=name, password=generate_password_hash(
                 password, method='sha256'))
-            if image:
-                filename = images.save(image)
-                user.image = filename
+            if image:  # Check if an image was uploaded
+                try:
+                    filename = images.save(image)
+                    user.image = filename
+                except UploadNotAllowed:
+                    flash('File type is not allowed.', category='error')
+                    return render_template("auth/login.html")
+
             try:
                 db.session.add(user)  # adiciona o usuario no banco de dados
                 db.session.commit()  # confirma que adicionou
