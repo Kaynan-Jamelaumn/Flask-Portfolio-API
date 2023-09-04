@@ -181,7 +181,7 @@ def api_project_create():
     return jsonify({"message": "Method not allowed"}), 405
 
 
-@views.route('/api/project/<int:projectId', methods=['GET', 'PUT', 'DELETE'])
+@views.route('/api/project/<int:projectId>', methods=['GET', 'PUT', 'DELETE'])
 def api_project_acition(projectId):
     project = Project.query.get(projectId)
 
